@@ -10,10 +10,10 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         HStack{
+            CardView(isFaceUp: false)
+            CardView()
             CardView(isFaceUp: true)
-            CardView()
-            CardView()
-            CardView()
+            CardView(isFaceUp: true)
         }
         .foregroundColor(.orange)
         .padding()
@@ -21,21 +21,24 @@ struct ContentView: View {
 }
 
 struct CardView : View{
-    var isFaceUp: Bool = false
+    @State var isFaceUp = false // 원래 struct 내부는 불변(immutable)인데,
+                                // @State 써서 포인터처럼 만들어 임시로 변하게함 (나중에 없앨것)
+                                // @State는 View 내부에서 변할 수 있는 상태를 저장하는 속성 래퍼임
     
     var body : some View {
-        ZStack (content: {
+        ZStack {
+            let base = RoundedRectangle(cornerRadius: 12)
             if isFaceUp {
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(lineWidth: 2)
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
                 Text("👻").font(.largeTitle)
             } else {
-                RoundedRectangle(cornerRadius: 12)
-                
+                base.fill()
             }
-        })
+        }
+        .onTapGesture {
+            isFaceUp.toggle() // bool 타입에 .toggle() 하면 true <-> false 바뀜
+        }
     }
 }
 
