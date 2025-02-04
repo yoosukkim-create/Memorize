@@ -24,6 +24,7 @@ struct CardView : View{
     @State var isFaceUp = false // 원래 struct 내부는 불변(immutable)인데,
                                 // @State 써서 포인터처럼 만들어 임시로 변하게함 (나중에 없앨것)
                                 // @State는 View 내부에서 변할 수 있는 상태를 저장하는 속성 래퍼임
+                                // 내부에서 수정할거라 let 하면 안됨
     
     var body : some View {
         ZStack {
