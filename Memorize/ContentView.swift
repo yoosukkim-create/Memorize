@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ContentView: View {
+    let emojis = ["👻","🎃","🕷️","😈"]
+    
     var body: some View {
         HStack{
-            CardView(isFaceUp: false)
-            CardView()
-            CardView(isFaceUp: true)
-            CardView(isFaceUp: true)
+            ForEach(emojis.indices, id: \.self) { index in // array.indices 하면 0..<array개수의 Range 출력
+                CardView(content: emojis[index])           // Range표현방식 0..<4 또는 0...3  : 0,1,2,3 출력
+            }
         }
         .foregroundColor(.orange)
         .padding()
@@ -21,6 +22,7 @@ struct ContentView: View {
 }
 
 struct CardView : View{
+    let content: String
     @State var isFaceUp = false // 원래 struct 내부는 불변(immutable)인데,
                                 // @State 써서 포인터처럼 만들어 임시로 변하게함 (나중에 없앨것)
                                 // @State는 View 내부에서 변할 수 있는 상태를 저장하는 속성 래퍼임
@@ -32,7 +34,7 @@ struct CardView : View{
             if isFaceUp {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text("👻").font(.largeTitle)
+                Text(content).font(.largeTitle)
             } else {
                 base.fill()
             }
