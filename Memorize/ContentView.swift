@@ -10,15 +10,13 @@ import SwiftUI
 struct ContentView: View {
     let emojis = ["👻","🎃","🕷️","😈","💀","🕸️","🧙‍♀️","🙀","👹","😱","☠️","🍭"]
     
-    @State var cardCount: Int = 4
+    // ------------------- Model로 이관할 부분 삭제 -------------------
+//    @State var cardCount: Int = 4
+    // -----------------------------------------------------------
     
     var body: some View {
-        VStack{
-            ScrollView{
-                cards
-            }
-            Spacer()
-            cardCountAdjusters
+        ScrollView{
+            cards
         }
         .padding()
     }
@@ -39,7 +37,7 @@ struct ContentView: View {
             // GridItem(.adaptive(minimum: 65) : 각 열의 크기를 최소 65포인트로 설정
             
             // 내부는 ViewBuilder
-            ForEach(0..<cardCount, id: \.self) { index in // array.indices 하면 0..<array개수의 Range 출력
+            ForEach(emojis.indices, id: \.self) { index in // array.indices 하면 0..<array개수의 Range 출력
                 CardView(content: emojis[index])           // Range표현방식 0..<4 또는 0...3  : 0,1,2,3 출력
                     .aspectRatio(2/3, contentMode: .fit) // View 비율 설정, 크기 조정
             }
@@ -47,32 +45,35 @@ struct ContentView: View {
         .foregroundColor(.orange)
     }
     
-    var cardCountAdjusters: some View {
-        HStack{
-            cardRemover
-            Spacer()
-            cardAdder
-        }
-        .imageScale(.large)
-        .font(.largeTitle)
-    }
+    // ------------------- Model로 이관할 부분 삭제 -------------------
+//    var cardCountAdjusters: some View {
+//        HStack{
+//            cardRemover
+//            Spacer()
+//            cardAdder
+//        }
+//        .imageScale(.large)
+//        .font(.largeTitle)
+//    }
+//    
+//    func cardCountAdjuster(by offset: Int, symbol: String) -> some View {
+//        Button(action:{
+//            cardCount += offset
+//        }, label: {
+//            Image(systemName: symbol)
+//        })
+//        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+//    }
+//    
+//    var cardRemover: some View {
+//        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
+//    }
+//    
+//    var cardAdder: some View {
+//        cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
+//    }
+    // -----------------------------------------------------------
     
-    func cardCountAdjuster(by offset: Int, symbol: String) -> some View {
-        Button(action:{
-            cardCount += offset
-        }, label: {
-            Image(systemName: symbol)
-        })
-        .disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
-    }
-    
-    var cardRemover: some View {
-        cardCountAdjuster(by: -1, symbol: "rectangle.stack.badge.minus.fill")
-    }
-    
-    var cardAdder: some View {
-        cardCountAdjuster(by: +1, symbol: "rectangle.stack.badge.plus.fill")
-    }
 }
 
 struct CardView : View{
